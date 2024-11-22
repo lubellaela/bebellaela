@@ -63,11 +63,32 @@
       checkVisibility();
     });
 
+    document.addEventListener('touchstart', function(e) {
+      isDragging = true;
+      document.addEventListener('touchmove', moveImageTouch);
+      checkVisibility();
+    });
+
+    document.addEventListener('touchend', function(e) {
+      isDragging = false;
+      document.removeEventListener('touchmove', moveImageTouch);
+      checkVisibility();
+    });
+
     function moveImage(e) {
       if (!isDragging) return;
       const toothImage = document.querySelector('.tooth-image');
       toothImage.style.left = e.pageX - toothImage.offsetWidth / 2 + 'px';
       toothImage.style.top = e.pageY - toothImage.offsetHeight / 2 + 'px';
+      checkVisibility();
+    }
+
+    function moveImageTouch(e) {
+      if (!isDragging || e.touches.length !== 1) return;
+      const toothImage = document.querySelector('.tooth-image');
+      const touch = e.touches[0];
+      toothImage.style.left = touch.pageX - toothImage.offsetWidth / 2 + 'px';
+      toothImage.style.top = touch.pageY - toothImage.offsetHeight / 2 + 'px';
       checkVisibility();
     }
 
