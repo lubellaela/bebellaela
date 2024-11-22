@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap');
+    
+    body {
+      background-color: #002147;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      position: relative;
+    }
+    .tooth-image {
+      width: 250px;
+      height: auto;
+      border-radius: 15px;
+      pointer-events: none;
+      position: absolute;
+      transition: transform 0.1s ease;
+    }
+    .title {
+      font-size: 4rem;
+      font-family: 'Roboto Slab', serif;
+      text-align: center;
+      color: #FFFFFF;
+      text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+      z-index: 1;
+      user-select: none;
+      visibility: hidden;
+      position: absolute;
+    }
+    .title span {
+      padding: 5px;
+    }
+    .title.show {
+      visibility: visible;
+    }
+  </style>
+  <title>Dente Seguindor</title>
+</head>
+<body>
+  <div class="title" id="title"><span>I & L</span></div>
+  <img src="dente.png" alt="Dente" class="tooth-image">
+
+  <script>
+    let isDragging = false;
+
+    document.addEventListener('mousedown', function() {
+      isDragging = true;
+      document.addEventListener('mousemove', moveImage);
+      checkVisibility();
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+      document.removeEventListener('mousemove', moveImage);
+      checkVisibility();
+    });
+
+    function moveImage(e) {
+      if (!isDragging) return;
+      const toothImage = document.querySelector('.tooth-image');
+      toothImage.style.left = e.pageX - toothImage.offsetWidth / 2 + 'px';
+      toothImage.style.top = e.pageY - toothImage.offsetHeight / 2 + 'px';
+      checkVisibility();
+    }
+
+    function checkVisibility() {
+      const toothImage = document.querySelector('.tooth-image');
+      const title = document.getElementById('title');
+      const rect = toothImage.getBoundingClientRect();
+      const titleRect = title.getBoundingClientRect();
+
+      if (
+        rect.left < titleRect.right &&
+        rect.right > titleRect.left &&
+        rect.top < titleRect.bottom &&
+        rect.bottom > titleRect.top
+      ) {
+        title.classList.remove('show');
+      } else {
+        title.classList.add('show');
+      }
+    }
+  </script>
+</body>
+</html>
