@@ -34,14 +34,12 @@
       text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
       z-index: 1;
       user-select: none;
-      visibility: hidden;
       position: absolute;
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
     .title span {
       padding: 5px;
-    }
-    .title.show {
-      visibility: visible;
     }
   </style>
   <title>Dente Seguindor</title>
@@ -79,16 +77,12 @@
       const rect = toothImage.getBoundingClientRect();
       const titleRect = title.getBoundingClientRect();
 
-      if (
-        rect.left < titleRect.right &&
-        rect.right > titleRect.left &&
-        rect.top < titleRect.bottom &&
-        rect.bottom > titleRect.top
-      ) {
-        title.classList.remove('show');
-      } else {
-        title.classList.add('show');
-      }
+      const overlap = !(rect.right < titleRect.left || 
+                        rect.left > titleRect.right || 
+                        rect.bottom < titleRect.top || 
+                        rect.top > titleRect.bottom);
+
+      title.style.opacity = overlap ? '0' : '1';
     }
   </script>
 </body>
